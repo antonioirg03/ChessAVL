@@ -19,3 +19,11 @@ On peut séparer les tests en 2 parties :
 - Un test pour vérifier que le seul mouvement possible si le roi est attaqué est de se mettre devant pour bloquer.
 - Un test pour vérifier que si la pièce en question ne rentre dans aucun des deux premiers cas, aucun mouvement n'est disponible.
 - Un test pour vérifier que si sur la même trajectoire où la pièce est placée, une pièce de l'opposition attaque le roi, notre pièce n'a pas de mouvement disponible.
+
+3. Des tests qui n'ont pas été implementés
+
+- vérifier quand un joueur gagne
+- tester si une partie est arrivé à un stalemate
+- tester si le mouvement de "castle" fonctionne corréctement côté roi et côté reine
+- tester que le même jouer ne peut pas jouer deux fois consecutivement
+- tester si un pion quand il est sur la première rangée peut faire un mouvement en avant de deux cases
