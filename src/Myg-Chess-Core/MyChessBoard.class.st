@@ -263,6 +263,7 @@ MyChessBoard >> isLegalMove: aPiece from: fromSquare to: toSquare [
 		originalPiece square: toSquare.
 		toSquare contents: originalPiece.
 		 ].
+	
 
     ^ isInCheck not
 
