@@ -14,7 +14,7 @@ MyPawnTest >> testId [
 { #category : 'tests' }
 MyPawnTest >> testMoves [
 
-	| pawn squares board |
+	| pawn squares board retrievedPiece|
 	board := MyChessBoard empty.
 	board at: 'c2' put: (pawn := MyPawn white).
 
@@ -23,7 +23,12 @@ MyPawnTest >> testMoves [
 		assertCollection: squares
 		includesAll:
 			(#( c3 ) collect: [ :name |
-				 board at: name ])
+				 board at: name ]).
+	
+	retrievedPiece := board at: 'c2'.
+	
+	self assert: retrievedPiece hasPiece equals: true.
+	
 ]
 
 { #category : 'tests' }

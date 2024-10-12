@@ -90,6 +90,19 @@ MyKingTest >> testIsNotCheckBySameColorRook [
 ]
 
 { #category : 'tests' }
+MyKingTest >> testIsNotCheckMated [
+
+	| king board |
+	board := MyChessBoard empty.
+	board at: 'e4' put: (king := MyKing white).
+
+	"Put an atacker rook on e column"
+	board at: 'e7' put: MyQueen black.
+
+	self assert: king isCheckMated not
+]
+
+{ #category : 'tests' }
 MyKingTest >> testMoves [
 
 	| king squares board |

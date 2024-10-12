@@ -8,7 +8,7 @@ Class {
 { #category : 'tests' }
 LegalMovesTest >> testBishopShouldBlockQueen [
 
-	| king board bishop squares |
+	| king board bishop squares squaresThatShouldBeAvailable|
 	board := MyChessBoard empty.
 	board at: 'e4' put: (king := MyKing white).
 
@@ -19,19 +19,19 @@ LegalMovesTest >> testBishopShouldBlockQueen [
 	
 	board at: 'b2' put: (bishop := MyBishop white).
 	
-	squares := bishop targetSquaresLegal: true.
+	squares := board getLegalMoves: bishop.
+	squaresThatShouldBeAvailable := (#( e5 ) collect: [ :name |
+				 board at: name ]) asOrderedCollection.
 	self
 		assertCollection: squares
-		equals:
-			(#( e5 ) collect: [ :name |
-				 board at: name ]).
+		equals: squaresThatShouldBeAvailable.
 	
 ]
 
 { #category : 'tests' }
 LegalMovesTest >> testBishopShouldCaptureQueen [
 
-	| king board bishop squares |
+	| king board bishop squares squaresThatShouldBeAvailable|
 	board := MyChessBoard empty.
 	board at: 'e4' put: (king := MyKing white).
 
@@ -42,19 +42,19 @@ LegalMovesTest >> testBishopShouldCaptureQueen [
 	
 	board at: 'b3' put: (bishop := MyBishop white).
 	
-	squares := bishop targetSquaresLegal: true.
+	squares := board getLegalMoves: bishop.
+	squaresThatShouldBeAvailable := (#( e6 ) collect: [ :name |
+				 board at: name ]) asOrderedCollection.
 	self
 		assertCollection: squares
-		equals:
-			(#( e6 ) collect: [ :name |
-				 board at: name ]).
+		equals: squaresThatShouldBeAvailable.
 	
 ]
 
 { #category : 'tests' }
 LegalMovesTest >> testBishopShouldNotHaveAvaliableMoves [
 
-	| king board bishop squares |
+	| king board bishop squares squaresThatShouldBeAvailable|
 	board := MyChessBoard empty.
 	board at: 'e4' put: (king := MyKing white).
 
@@ -65,19 +65,19 @@ LegalMovesTest >> testBishopShouldNotHaveAvaliableMoves [
 	
 	board at: 'b3' put: (bishop := MyBishop white).
 	
-	squares := bishop targetSquaresLegal: true.
+	squares := board getLegalMoves: bishop.
+	squaresThatShouldBeAvailable := (#( e6 ) collect: [ :name |
+				 board at: name ]) asOrderedCollection.
 	self
 		assertCollection: squares
-		equals:
-			(#( e6 ) collect: [ :name |
-				 board at: name ]).
+		equals: squaresThatShouldBeAvailable.
 	
 ]
 
 { #category : 'tests' }
 LegalMovesTest >> testBishopShouldNotMove [
 
-	| king board bishop squares |
+	| king board bishop squares squaresThatShouldBeAvailable|
 	board := MyChessBoard empty.
 	board at: 'e4' put: (king := MyKing white).
 
@@ -88,19 +88,18 @@ LegalMovesTest >> testBishopShouldNotMove [
 	
 	board at: 'e5' put: (bishop := MyBishop white).
 	
-	squares := bishop targetSquaresLegal: true.
+	squares := board getLegalMoves: bishop.
+	squaresThatShouldBeAvailable := (#( ) collect: [ :name |
+				 board at: name ]) asOrderedCollection.
 	self
 		assertCollection: squares
-		equals:
-			(#(  ) collect: [ :name |
-				 board at: name ]).
-	
+		equals: squaresThatShouldBeAvailable .
 ]
 
 { #category : 'tests' }
 LegalMovesTest >> testKnightShouldBlockQueen [
 
-	| king board knight squares |
+	| king board knight squares squaresThatShouldBeAvailable|
 	board := MyChessBoard empty.
 	board at: 'e4' put: (king := MyKing white).
 
@@ -111,19 +110,18 @@ LegalMovesTest >> testKnightShouldBlockQueen [
 	
 	board at: 'd3' put: (knight := MyKnight white).
 	
-	squares := knight targetSquaresLegal: true.
+	squares := board getLegalMoves: knight.
+	squaresThatShouldBeAvailable := (#( e5 ) collect: [ :name |
+				 board at: name ]) asOrderedCollection.
 	self
 		assertCollection: squares
-		equals:
-			(#( e5 ) collect: [ :name |
-				 board at: name ]).
-	
+		equals: squaresThatShouldBeAvailable.
 ]
 
 { #category : 'tests' }
 LegalMovesTest >> testKnightShouldCaptureQueen [
 
-	| king board knight squares |
+	| king board knight squares squaresThatShouldBeAvailable|
 	board := MyChessBoard empty.
 	board at: 'e4' put: (king := MyKing white).
 
@@ -134,44 +132,20 @@ LegalMovesTest >> testKnightShouldCaptureQueen [
 	
 	board at: 'd3' put: (knight := MyKnight white).
 	
-	squares := knight targetSquaresLegal: true.
+	squares := board getLegalMoves: knight.
+	squaresThatShouldBeAvailable := (#( e5 ) collect: [ :name |
+				 board at: name ]) asOrderedCollection.
 	self
 		assertCollection: squares
-		equals:
-			(#( e5 ) collect: [ :name |
-				 board at: name ]).
+		equals: squaresThatShouldBeAvailable .
 	
 ]
 
 { #category : 'tests' }
 LegalMovesTest >> testKnightShouldNotHaveAvailableMoves [
 
-	| king board knight squares |
 
-	
-	board := MyChessBoard empty.
-	board at: 'e4' put: (king := MyKing white).
-
-	"Put an atacker rook on e column"
-	board at: 'e8' put: MyQueen black.
-
-	self assert: king isInCheck.
-	
-	board at: 'a1' put: (knight := MyKnight white).
-	
-	squares := knight targetSquaresLegal: true.
-	self
-		assertCollection: squares
-		equals:
-			(#(  ) collect: [ :name |
-				 board at: name ]).
-	
-]
-
-{ #category : 'tests' }
-LegalMovesTest >> testKnightShouldNotMove [
-
-	| king board knight squares |
+	| king board knight squares squaresThatShouldBeAvailable|
 
 	
 	board := MyChessBoard empty.
@@ -184,19 +158,19 @@ LegalMovesTest >> testKnightShouldNotMove [
 	
 	board at: 'e6' put: (knight := MyKnight white).
 	
-	squares := knight targetSquaresLegal: true.
+	squares := board getLegalMoves: knight.
+	squaresThatShouldBeAvailable := (#(  ) collect: [ :name |
+				 board at: name ]) asOrderedCollection.
 	self
 		assertCollection: squares
-		equals:
-			(#(  ) collect: [ :name |
-				 board at: name ]).
+		equals: squaresThatShouldBeAvailable .
 	
 ]
 
 { #category : 'tests' }
 LegalMovesTest >> testPawnShouldCaptureQueen [
 
-	| king board pawn squares |
+	| king board pawn squares squaresThatShouldBeAvailable|
 	board := MyChessBoard empty.
 	board at: 'e4' put: (king := MyKing white).
 
@@ -207,19 +181,19 @@ LegalMovesTest >> testPawnShouldCaptureQueen [
 	
 	board at: 'f6' put: (pawn := MyPawn white).
 	
-	squares := pawn targetSquaresLegal: true.
+	squares := board getLegalMoves: pawn.
+	squaresThatShouldBeAvailable := (#(  ) collect: [ :name |
+				 board at: name ]) asOrderedCollection.
 	self
 		assertCollection: squares
-		equals:
-			(#( e7 ) collect: [ :name |
-				 board at: name ]).
+		equals: squaresThatShouldBeAvailable .
 	
 ]
 
 { #category : 'tests' }
 LegalMovesTest >> testQueenShouldBlockQueen [
 
-	| king board queen squares |
+	| king board queen squares squaresThatShouldBeAvailable|
 	board := MyChessBoard empty.
 	board at: 'e4' put: (king := MyKing white).
 
@@ -230,19 +204,19 @@ LegalMovesTest >> testQueenShouldBlockQueen [
 	
 	board at: 'g5' put: (queen := MyQueen white).
 	
-	squares := queen targetSquaresLegal: true.
+	squares := board getLegalMoves: queen.
+	squaresThatShouldBeAvailable := (#( e5  ) collect: [ :name |
+				 board at: name ]) asOrderedCollection.
 	self
 		assertCollection: squares
-		equals:
-			(#( e5 ) collect: [ :name |
-				 board at: name ]).
+		equals: squaresThatShouldBeAvailable.
 	
 ]
 
 { #category : 'tests' }
 LegalMovesTest >> testQueenShouldCaptureQueen [
 
-	| king board queen squares |
+	| king board queen squares squaresThatShouldBeAvailable |
 	board := MyChessBoard empty.
 	board at: 'e4' put: (king := MyKing white).
 
@@ -253,19 +227,19 @@ LegalMovesTest >> testQueenShouldCaptureQueen [
 	
 	board at: 'g5' put: (queen := MyQueen white).
 	
-	squares := queen targetSquaresLegal: true.
+	squares := board getLegalMoves: queen.
+	squaresThatShouldBeAvailable := (#( e7 e5 ) collect: [ :name |
+				 board at: name ]) asOrderedCollection.
 	self
 		assertCollection: squares
-		equals:
-			(#( e7 ) collect: [ :name |
-				 board at: name ]).
+		equals: squaresThatShouldBeAvailable .
 	
 ]
 
 { #category : 'tests' }
 LegalMovesTest >> testQueenShouldNotHaveAvailableMoves [
 
-	| king board queen squares |
+	| king board queen squares squaresThatShouldBeAvailable|
 	board := MyChessBoard empty.
 	board at: 'e4' put: (king := MyKing white).
 
@@ -276,19 +250,19 @@ LegalMovesTest >> testQueenShouldNotHaveAvailableMoves [
 	
 	board at: 'h1' put: (queen := MyQueen white).
 	
-	squares := queen targetSquaresLegal: true.
+	squares := board getLegalMoves: queen.
+	squaresThatShouldBeAvailable := (#(  ) collect: [ :name |
+				 board at: name ]) asOrderedCollection.
 	self
 		assertCollection: squares
-		equals:
-			(#(  ) collect: [ :name |
-				 board at: name ]).
+		equals: squaresThatShouldBeAvailable .
 	
 ]
 
 { #category : 'tests' }
 LegalMovesTest >> testRookShouldBlockQueen [
 
-	| king board rook squares |
+	| king board rook squares squaresThatShouldBeAvailable |
 	board := MyChessBoard empty.
 	board at: 'e4' put: (king := MyKing white).
 
@@ -299,19 +273,19 @@ LegalMovesTest >> testRookShouldBlockQueen [
 	
 	board at: 'g5' put: (rook := MyRook white).
 	
-	squares := rook targetSquaresLegal: true.
+	squares := board getLegalMoves: rook.
+	squaresThatShouldBeAvailable := (#( e5 ) collect: [ :name |
+				 board at: name ]) asOrderedCollection.
 	self
 		assertCollection: squares
-		equals:
-			(#( e5 ) collect: [ :name |
-				 board at: name ]).
+		equals: squaresThatShouldBeAvailable .
 	
 ]
 
 { #category : 'tests' }
 LegalMovesTest >> testRookShouldCaptureQueen [
 
-	| king board rook squares |
+	| king board rook squares squaresThatShouldBeAvailable|
 	board := MyChessBoard empty.
 	board at: 'e4' put: (king := MyKing white).
 
@@ -322,19 +296,19 @@ LegalMovesTest >> testRookShouldCaptureQueen [
 	
 	board at: 'h6' put: (rook := MyRook white).
 	
-	squares := rook targetSquaresLegal: true.
+	squares := board getLegalMoves: rook.
+	squaresThatShouldBeAvailable := (#( e6 ) collect: [ :name |
+				 board at: name ]) asOrderedCollection.
 	self
 		assertCollection: squares
-		equals:
-			(#( e6 ) collect: [ :name |
-				 board at: name ]).
+		equals: squaresThatShouldBeAvailable.
 	
 ]
 
 { #category : 'tests' }
 LegalMovesTest >> testRookShouldNotHaveAvaliableMoves [
 
-	| king board rook squares |
+	| king board rook squares squaresThatShouldBeAvailable|
 	board := MyChessBoard empty.
 	board at: 'e4' put: (king := MyKing white).
 
@@ -345,11 +319,13 @@ LegalMovesTest >> testRookShouldNotHaveAvaliableMoves [
 	
 	board at: 'a8' put: (rook := MyRook white).
 	
-	squares := rook targetSquaresLegal: true.
+	squares := board getLegalMoves: rook.
+	squaresThatShouldBeAvailable := (#(  ) collect: [ :name |
+				 board at: name ]) asOrderedCollection.
+	 
 	self
 		assertCollection: squares
 		equals:
-			(#(  ) collect: [ :name |
-				 board at: name ]).
+			squaresThatShouldBeAvailable.
 	
 ]

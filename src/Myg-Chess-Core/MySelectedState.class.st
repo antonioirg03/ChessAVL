@@ -33,11 +33,21 @@ MySelectedState >> board: anObject [
 { #category : 'events' }
 MySelectedState >> clickOn: aMyChessSquare [
 	"We should only move if it's legal but..."
-
+	|aPiece legalMoves squares|
 	selection unselect.
 	selection contents ifNotNil: [
-		board unhighLightTargets: selection contents targetSquares.
-		board game move: selection contents to: aMyChessSquare ].
+		
+		aPiece := selection contents.
+
+		squares := aPiece legalTargetSquares.
+		legalMoves := squares select: [ :targetSquare
+			 |  board isLegalMove: aPiece from: (aPiece square) to: targetSquare ].
+		
+		board unhighLightTargets: legalMoves.
+		
+		(legalMoves includes: aMyChessSquare) ifTrue:[board game move: aPiece to: aMyChessSquare].
+		
+		 ].
 
 	^ MyUnselectedState board: board
 ]

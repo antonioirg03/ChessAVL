@@ -66,14 +66,15 @@ MyPlayer >> play [
 		          ifFalse: [ self pieces copy asOrderedCollection ].
 
 
-	[ pieces notEmpty ] whileTrue: [
-		| piece legalMoves |
-		piece := pieces atRandom.
-		pieces remove: piece.
-		legalMoves := piece legalTargetSquares.
-		legalMoves ifNotEmpty: [
-			game move: piece to: legalMoves atRandom.
-			^ self ] ].
+    [ pieces notEmpty ] whileTrue: [
+        | piece legalMoves |
+        piece := pieces atRandom.
+        pieces remove: piece.
+        legalMoves := piece legalTargetSquares.
+       
+        legalMoves ifNotEmpty: [
+            game move: piece to: legalMoves atRandom.
+            ^ self ] ].
 
 	self halt: 'NO MOVES AVAILABLE!'
 ]

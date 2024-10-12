@@ -49,11 +49,24 @@ MyChessGame class >> new [
 	self error: 'Please use one of the other constructors'
 ]
 
+{ #category : 'accessing' }
+MyChessGame >> board [ 
+
+	^ board deepCopy 
+]
+
 { #category : 'playing' }
 MyChessGame >> checkForMate [
 
 	whitePlayer king isCheckMated ifTrue: [ self halt: 'Black wins!' ].
 	blackPlayer king isCheckMated ifTrue: [ self halt: 'White wins!' ].
+]
+
+{ #category : 'accessing' }
+MyChessGame >> getKingPieceColor: aColor [ 
+		^ self pieces detect: [ :piece |
+			 (piece isKing and: [piece color = aColor])
+			] ifNone: [ nil ]
 ]
 
 { #category : 'initialization' }
@@ -173,4 +186,9 @@ MyChessGame >> recordMovementOf: aPiece to: aSquare [
 	].
 	
 	movesLabel text: movesText
+]
+
+{ #category : 'moves' }
+MyChessGame >> revertMove: piece from: originalSquare [
+	piece moveTo: originalSquare.
 ]

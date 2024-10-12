@@ -34,7 +34,14 @@ MyUnselectedState >> clickOn: aMyChessSquare [
 	Select the chess square"
 	aMyChessSquare select.
 	aMyChessSquare contents ifNotNil: [
-		board highLightTargets: aMyChessSquare contents targetSquares ].
+		|aPiece legalMoves square|
+		aPiece := aMyChessSquare contents.
+
+		square := aPiece square.
+		legalMoves := board getLegalMoves: aPiece.		
+		
+		board highLightTargets: legalMoves.
+		].
 
 	^ MySelectedState board: board selected: aMyChessSquare
 ]

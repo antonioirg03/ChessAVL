@@ -8,7 +8,8 @@ Class {
 		'state',
 		'whiteColor',
 		'blackColor',
-		'game'
+		'game',
+		'pieces'
 	],
 	#category : 'Myg-Chess-Core',
 	#package : 'Myg-Chess-Core'
@@ -83,6 +84,30 @@ MyChessBoard >> game [
 MyChessBoard >> game: aGame [
 
 	game := aGame
+]
+
+{ #category : 'accessing' }
+MyChessBoard >> getKingPieceColor: aColor [ 
+    ^ self pieces detect: [ :piece |
+        piece notNil and: [ piece isKing and: [ piece color = aColor ] ]
+    ] ifNone: [ nil ]
+]
+
+{ #category : 'accessing' }
+MyChessBoard >> getKingPieceColor: aColor pieces: thePieces [
+		^ thePieces detect: [ :piece |
+			 (piece isKing and: [piece color = aColor])
+			] ifNone: [ nil ]
+]
+
+{ #category : 'accessing' }
+MyChessBoard >> getLegalMoves: aPiece [
+	|squares legalMoves|
+	squares := (aPiece legalTargetSquares) asOrderedCollection .
+	legalMoves := squares select: [ :targetSquare
+			|  self isLegalMove: aPiece from: (aPiece square) to: targetSquare ].
+		
+	^ legalMoves
 ]
 
 { #category : 'highlighting' }
@@ -215,6 +240,32 @@ MyChessBoard >> initializeSquares [
 			grid at: squareNotation put: square.
 			self addChild: square ].
 		black := black not ]
+]
+
+{ #category : 'accessing' }
+MyChessBoard >> isLegalMove: aPiece from: fromSquare to: toSquare [ 
+    | originalSquare originalPiece kingForColor isInCheck wasOccupied |
+
+    originalSquare := aPiece square.
+    originalPiece := toSquare contents.
+    wasOccupied := toSquare hasPiece.
+    
+    aPiece moveTo: toSquare.
+	 aPiece isKing
+    ifFalse: [
+	  kingForColor := self getKingPieceColor: aPiece color.
+     isInCheck := kingForColor isInCheck.
+	]
+	ifTrue: [ isInCheck := aPiece isInCheck ].
+	
+	 aPiece moveTo: fromSquare.
+	 wasOccupied ifTrue: [ 
+		originalPiece square: toSquare.
+		toSquare contents: originalPiece.
+		 ].
+
+    ^ isInCheck not
+
 ]
 
 { #category : 'accessing' }
