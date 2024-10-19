@@ -9,7 +9,9 @@ Class {
 		'whiteColor',
 		'blackColor',
 		'game',
-		'pieces'
+		'pieces',
+		'columnCount',
+		'rowCount'
 	],
 	#category : 'Myg-Chess-Core',
 	#package : 'Myg-Chess-Core'
@@ -75,6 +77,11 @@ MyChessBoard >> click: aMyChessSquare [
 ]
 
 { #category : 'accessing' }
+MyChessBoard >> columnCount [
+	^ columnCount
+]
+
+{ #category : 'accessing' }
 MyChessBoard >> game [
 
 	^ game
@@ -91,13 +98,6 @@ MyChessBoard >> getKingPieceColor: aColor [
     ^ self pieces detect: [ :piece |
         piece notNil and: [ piece isKing and: [ piece color = aColor ] ]
     ] ifNone: [ nil ]
-]
-
-{ #category : 'accessing' }
-MyChessBoard >> getKingPieceColor: aColor pieces: thePieces [
-		^ thePieces detect: [ :piece |
-			 (piece isKing and: [piece color = aColor])
-			] ifNone: [ nil ]
 ]
 
 { #category : 'accessing' }
@@ -126,12 +126,15 @@ MyChessBoard >> initialize [
 
 	state := MyUnselectedState board: self.
 	grid := Dictionary new.
-
+	
+	columnCount := 8.
+	rowCount := 8.
+	
 	self background: (BlBackground paint: Color veryVeryLightGray).
 	self layout: (BlGridLayout vertical
 			 cellSpacing: 5;
-			 columnCount: 8;
-			 rowCount: 8;
+			 columnCount: columnCount;
+			 rowCount: rowCount;
 			 yourself).
 	self constraintsDo: [ :aLayoutConstraints |
 		aLayoutConstraints horizontal fitContent.
@@ -162,7 +165,7 @@ MyChessBoard >> initializePieces [
 	| black |
 	black := false.
 	$a asciiValue to: $h asciiValue do: [ :column |
-		8 to: 1 by: -1 do: [ :file |
+		columnCount to: 1 by: -1 do: [ :file |
 			| squareNotation square |
 			squareNotation := column asCharacter asString , file asString.
 			square := black
@@ -216,7 +219,7 @@ MyChessBoard >> initializeSquares [
 	| black |
 	black := false.
 	$a asciiValue to: $h asciiValue do: [ :column |
-		8 to: 1 by: -1 do: [ :file |
+		columnCount to: 1 by: -1 do: [ :file |
 			| squareNotation square |
 			squareNotation := column asCharacter asString , file asString.
 			square := black
@@ -269,10 +272,20 @@ MyChessBoard >> isLegalMove: aPiece from: fromSquare to: toSquare [
 
 ]
 
+{ #category : 'api - layout' }
+MyChessBoard >> layout [
+	^ layout
+]
+
 { #category : 'accessing' }
 MyChessBoard >> pieces [
 	
 	^ children collect: [ :square | square contents ]
+]
+
+{ #category : 'accessing' }
+MyChessBoard >> rowCount [
+	^ rowCount
 ]
 
 { #category : 'accessing' }

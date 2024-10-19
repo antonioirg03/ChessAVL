@@ -52,7 +52,13 @@ MyChessGame class >> new [
 { #category : 'accessing' }
 MyChessGame >> board [ 
 
-	^ board deepCopy 
+	^ board
+]
+
+{ #category : 'accessing' }
+MyChessGame >> board: aMyChessBoard [ 
+
+	board := aMyChessBoard.
 ]
 
 { #category : 'playing' }
